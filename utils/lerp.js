@@ -4,4 +4,5 @@ function lerp(start, end, percent) {
     return start + (end - start) * percent; // when percent is 0, return start. when percent is 1, return end
 }
 
-module.exports = lerp; // export the lerp function
+module.exports = lerp;
+// export the lerp function

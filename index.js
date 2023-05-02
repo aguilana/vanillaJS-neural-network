@@ -1,5 +1,5 @@
-// get a refernce to the canvas
 
+// get a refernce to the canvas
 const canvas = document.getElementById("myCanvas");
 
 // set height
