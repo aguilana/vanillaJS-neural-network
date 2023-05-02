@@ -1,3 +1,4 @@
+import lerp from "../utils/lerp.js";
 
 class Road {
     constructor(x, width, laneCount = 3) {
@@ -106,5 +107,5 @@ class Road {
     }
 
 }
-
+export default Road;
 // import { lerp } from "../utils/lerp.js";

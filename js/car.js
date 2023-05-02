@@ -1,3 +1,4 @@
+import Controls from './controls.js'
 class Car {
     constructor(x, y, width, height) {
         // the car is a rectangle with a center point (x, y) and a width and height
@@ -117,3 +118,5 @@ class Car {
     }
 
 }
+
+export default Car;

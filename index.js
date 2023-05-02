@@ -1,4 +1,5 @@
-
+import Road from "./js/road.js";
+import Car from "./js/car.js";
 // get a refernce to the canvas
 const canvas = document.getElementById("myCanvas");
 
