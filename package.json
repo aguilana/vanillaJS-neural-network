@@ -1,0 +1,11 @@
+{
+  "name": "vanilla-neural-network",
+  "version": "1.0.0",
+  "description": "The idea here was to practice some vanilla js and touch up on class methods.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
