@@ -1,7 +1,7 @@
 
 class Road {
     constructor(x, width, laneCount = 3) {
-        this.x = x;
+        this.x = x; // x position of the road in the canvas (center of the road)
         this.width = width;
         this.laneCount = laneCount;
 
@@ -11,6 +11,19 @@ class Road {
         const infinity = 2000000;
         this.top = -infinity;
         this.bottom = infinity;
+
+        const topLeft = { x: this.left, y: this.top };
+        const topRight = { x: this.right, y: this.top };
+        const bottomLeft = { x: this.left, y: this.bottom };
+        const bottomRight = { x: this.right, y: this.bottom };
+        // add borders to the road
+        // maybe we can add curves to the road later
+        this.borders = [
+            // first part will be a segment whichi will be an array of points
+            [topLeft, bottomLeft], // segment 1
+            [topRight, bottomRight] // segment 2
+        ]
+            ;
     }
 
     draw(ctx) {
@@ -20,18 +33,13 @@ class Road {
         ctx.strokeStyle = "white";
 
         // for loop to draw the lanes on the canvas
-        for (let i = 0; i <= this.laneCount; i++) {
+        for (let i = 1; i <= this.laneCount - 1; i++) {
             // need to find the x position of the lane using linear interpolation
             // get values of left and right according to percetage of lane. last value is going to be between 0 and 1
             const x = lerp(this.left, this.right, i / this.laneCount);
-            // add dashes to the middle of each lane
-            if (i > 0 && i < this.laneCount) {
-                // set the line dash
-                ctx.setLineDash([20, 20]); // 20 pixels of line, 20 pixels of space
-                // set the line dash offset
-            } else {
-                ctx.setLineDash([0, 0]); // 0 pixels of line, 0 pixels of space
-            }
+
+            ctx.setLineDash([20, 20]); // 20 pixels of line, 20 pixels of space
+
             // draw the left line
             ctx.beginPath();
             // moveTo is a method of the context object (ctx) to move the pen to a point
@@ -42,6 +50,23 @@ class Road {
             ctx.stroke();
 
         }
+
+        // draw the borders on the canvas
+        ctx.setLineDash([]); // reset the line dash
+
+        // for loop to draw the borders on the canvas using the borders array of arrays of points (segments)
+        this.borders.forEach(border => {
+            const [start, end] = border; // destructuring the border array of points (segments)
+            // draw the left line
+            ctx.beginPath();
+            // moveTo is a method of the context object (ctx) to move the pen to a point
+            ctx.moveTo(start.x, start.y);
+            // lineTo is a method of the context object (ctx) to draw a line to a point
+            ctx.lineTo(end.x, end.y);
+            // stroke is a method of the context object (ctx) to draw the line
+            ctx.stroke();
+        }
+        );
     }
 
     // method to check the center of a given lane

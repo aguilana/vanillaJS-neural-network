@@ -21,6 +21,9 @@ function animate() {
     // canvas has a width and height property that we can use to set the canvas size
     canvas.height = window.innerHeight;
 
+    // before drawing the road, we will save the current context state
+    ctx.save();
+    ctx.translate(0, -car.y + canvas.height * 0.8); // translate the canvas to the center of the car where we want the center to be positioned
     // draw the road on the canvas
     road.draw(ctx);
 
