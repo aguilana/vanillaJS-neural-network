@@ -17,7 +17,7 @@ animate();
 // update the car's position
 function animate() {
     // update the car's position
-    car.update();
+    car.update(road.borders); // borders added to the car's update method to keep the car on the road
 
     // canvas has a width and height property that we can use to set the canvas size
     canvas.height = window.innerHeight;

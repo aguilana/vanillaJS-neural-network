@@ -1,5 +1,6 @@
 import Controls from './controls.js'
 import Sensor from './sensors.js';
+
 class Car {
     constructor(x, y, width, height) {
         // the car is a rectangle with a center point (x, y) and a width and height
@@ -56,9 +57,9 @@ class Car {
     }
 
     // update method to update the car's position
-    update() {
+    update(roadBoarders) {
         this.#moveCar();
-        this.sensor.update();
+        this.sensor.update(roadBoarders);
     }
 
     #moveCar() {
