@@ -62,6 +62,17 @@ class Car {
         this.sensor.update(roadBoarders);
     }
 
+    #createPolygon() {
+        // 1 point per corner of the car and can always add points for shapes
+        const points = []
+        // figure out radius
+        const radius = Math.hypot(this.width, this.height) / 2 // only need half of the width and height
+        const alpha = Math.atan2(this.width, this.height)
+        // with two above we can add our first point
+        // points.push({
+        //     x:
+    }
+
     #moveCar() {
         // increase the speed of the car by the acceleration
         if (this.controls.up) {
