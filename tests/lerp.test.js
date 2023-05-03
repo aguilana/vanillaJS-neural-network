@@ -1,4 +1,4 @@
-const lerp = require('../utils/lerp');
+import lerp from '../utils/lerp';
 
 describe('lerp function', () => {
     it('should return the start value when percent is 0', () => {

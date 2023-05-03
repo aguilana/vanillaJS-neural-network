@@ -1,4 +1,5 @@
 import Controls from './controls.js'
+import Sensor from './sensors.js';
 class Car {
     constructor(x, y, width, height) {
         // the car is a rectangle with a center point (x, y) and a width and height
@@ -12,6 +13,9 @@ class Car {
         this.maxSpeed = 5; // maxSpeed attribute of car to store in the object
         this.friction = 0.05; // friction attribute of car to store in the object
         this.angle = 0; // angle attribute of car to store in the object
+
+
+        this.sensor = new Sensor(this); // passing the car instance to the sensor class
 
         this.controls = new Controls();
     }
@@ -46,11 +50,15 @@ class Car {
 
         // restore the context to the saved state
         ctx.restore();
+
+        // in addition to drawing the car we need to tell the sensor to draw itself
+        this.sensor.draw(ctx);
     }
 
     // update method to update the car's position
     update() {
         this.#moveCar();
+        this.sensor.update();
     }
 
     #moveCar() {
