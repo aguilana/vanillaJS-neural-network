@@ -11,7 +11,7 @@ const ctx = canvas.getContext("2d");
 
 // draw a rectangle on the canvas using the context object (ctx)
 const road = new Road(canvas.width / 2, canvas.width * 0.9); // x, width, laneCount
-const car = new Car(road.getLaneCenter(1), 100, 30, 50) // x, y, width of car, height of car
+const car = new Car(road.getLaneCenter(1), 100, 35, 55) // x, y, width of car, height of car
 
 animate();
 // update the car's position

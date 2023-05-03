@@ -23,42 +23,53 @@ class Car {
 
     // draw method to draw the car on the canvas using the context object (ctx) passed in as a parameter to the draw method
     draw(ctx) {
-        // save the current context state
-        ctx.save();
-
-        // translate the canvas to the center of the car where we want the center to be positioned
-        ctx.translate(this.x, this.y);
-
-        // rotate the canvas by the angle of the car
-        ctx.rotate(-this.angle);
-
-        // begin Path to draw a rectangle on the canvas
-        ctx.beginPath();
-
-        // set the color of the rectangle
-        ctx.fillStyle = "darkred";
-
-        // rect is a method of the context object (ctx) to draw a rectangle
-        ctx.rect(
-            -this.width / 2, // x is the center of the car
-            -this.height / 2, // y is the center of the car
-            this.width,
-            this.height
-        )
-
-        // ask context to fill
-        ctx.fill();
-
-        // restore the context to the saved state
-        ctx.restore();
+        /*         // save the current context state
+                // this code was used PRIOR to creating the polygon!
+                ctx.save();
+        
+                // translate the canvas to the center of the car where we want the center to be positioned
+                ctx.translate(this.x, this.y);
+        
+                // rotate the canvas by the angle of the car
+                ctx.rotate(-this.angle);
+        
+                // begin Path to draw a rectangle on the canvas
+                ctx.beginPath();
+        
+                // set the color of the rectangle
+                ctx.fillStyle = "darkred";
+        
+                // rect is a method of the context object (ctx) to draw a rectangle
+                ctx.rect(
+                    -this.width / 2, // x is the center of the car
+                    -this.height / 2, // y is the center of the car
+                    this.width,
+                    this.height
+                )
+        
+                // ask context to fill
+                ctx.fill();
+        
+                // restore the context to the saved state
+                ctx.restore(); */
 
         // in addition to drawing the car we need to tell the sensor to draw itself
+        ctx.beginPath();
+        ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
+        // now loop through remaining points
+        for (let i = 1; i < this.polygon.length; i++) {
+            ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
+        }
+        ctx.fill();
         this.sensor.draw(ctx);
     }
 
     // update method to update the car's position
     update(roadBoarders) {
         this.#moveCar();
+
+        // want to update the points after we move the car
+        this.polygon = this.#createPolygon() // create a polygon for the car
         this.sensor.update(roadBoarders);
     }
 
@@ -69,8 +80,29 @@ class Car {
         const radius = Math.hypot(this.width, this.height) / 2 // only need half of the width and height
         const alpha = Math.atan2(this.width, this.height)
         // with two above we can add our first point
-        // points.push({
-        //     x:
+
+        // we can change the shape by altering the angle of the car
+        points.push({ // top right point
+            x: this.x - Math.sin(this.angle - alpha) * radius / 2,
+            y: this.y - Math.cos(this.angle - alpha) * radius
+        }
+        )
+        points.push({ // top left point
+            x: this.x - Math.sin(this.angle + alpha) * radius / 2,
+            y: this.y - Math.cos(this.angle + alpha) * radius
+        }
+        )
+        points.push({ // bottom left point
+            x: this.x - Math.sin(Math.PI + this.angle - alpha) * radius,
+            y: this.y - Math.cos(Math.PI + this.angle - alpha) * radius
+        }
+        )
+        points.push({ // bottom right point
+            x: this.x - Math.sin(Math.PI + this.angle + alpha) * radius,
+            y: this.y - Math.cos(Math.PI + this.angle + alpha) * radius
+        }
+        )
+        return points
     }
 
     #moveCar() {
