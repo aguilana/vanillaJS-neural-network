@@ -1,8 +1,9 @@
 import Controls from './controls.js'
 import Sensor from './sensors.js';
+import polyIntersection from '../utils/polyIntersection.js';
 
 class Car {
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, controlType, maxSpeed = 3) {
         // the car is a rectangle with a center point (x, y) and a width and height
         this.x = x;
         this.y = y;
@@ -11,14 +12,21 @@ class Car {
 
         this.speed = 0; // speed attribute of car to store in the object
         this.acceleration = 0.5; // acceleration attribute of car to store in the object
-        this.maxSpeed = 5; // maxSpeed attribute of car to store in the object
+        this.maxSpeed = maxSpeed; // maxSpeed attribute of car to store in the object
         this.friction = 0.05; // friction attribute of car to store in the object
         this.angle = 0; // angle attribute of car to store in the object
 
+        this.damaged = false // damaged attribute of car to store in the object
 
-        this.sensor = new Sensor(this); // passing the car instance to the sensor class
+        if (controlType !== "DUMMY") {
+            this.sensor = new Sensor(this); // passing the car instance to the sensor class
+        }
 
-        this.controls = new Controls();
+        this.controls = new Controls(controlType);
+
+
+
+        this.polyIntersection = polyIntersection;
     }
 
     // draw method to draw the car on the canvas using the context object (ctx) passed in as a parameter to the draw method
@@ -53,6 +61,12 @@ class Car {
                 // restore the context to the saved state
                 ctx.restore(); */
 
+        // logic to change color of car if damaged
+        if (this.damaged) {
+            ctx.fillStyle = 'gray'
+        } else {
+            ctx.fillStyle = 'black'
+        }
         // in addition to drawing the car we need to tell the sensor to draw itself
         ctx.beginPath();
         ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
@@ -61,16 +75,38 @@ class Car {
             ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
         }
         ctx.fill();
-        this.sensor.draw(ctx);
+
+        if (this.sensor) {
+
+            this.sensor.draw(ctx);
+        }
+
     }
 
     // update method to update the car's position
-    update(roadBoarders) {
-        this.#moveCar();
+    update(roadBorder) {
+        if (!this.damaged) {
+            this.#moveCar();
 
-        // want to update the points after we move the car
-        this.polygon = this.#createPolygon() // create a polygon for the car
-        this.sensor.update(roadBoarders);
+            // want to update the points after we move the car
+            this.polygon = this.#createPolygon() // create a polygon for the car
+
+            this.damaged = this.#assessDamage(roadBorder) // assess damage to the car}
+        }
+        if (this.sensor) {
+            this.sensor.update(roadBorder);
+        }
+    }
+
+    #assessDamage(roadBorder) {
+        // loop through all the border and check if there is an intersection between polygon and road border of i then return true
+        // else return false
+        for (let i = 0; i < roadBorder.length; i++) {
+            if (this.polyIntersection(this.polygon, roadBorder[i])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     #createPolygon() {
@@ -83,12 +119,12 @@ class Car {
 
         // we can change the shape by altering the angle of the car
         points.push({ // top right point
-            x: this.x - Math.sin(this.angle - alpha) * radius / 2,
+            x: this.x - Math.sin(this.angle - alpha) * radius,
             y: this.y - Math.cos(this.angle - alpha) * radius
         }
         )
         points.push({ // top left point
-            x: this.x - Math.sin(this.angle + alpha) * radius / 2,
+            x: this.x - Math.sin(this.angle + alpha) * radius,
             y: this.y - Math.cos(this.angle + alpha) * radius
         }
         )

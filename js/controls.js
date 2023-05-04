@@ -1,13 +1,20 @@
 class Controls {
-    constructor() {
+    constructor(controlType) {
         // set the default values for the controls to false (not pressed) when the object is created
         this.left = false;
         this.right = false;
         this.up = false;
         this.down = false;
 
-        // add event listeners for the keydown and keyup events with # notation to make them private
-        this.#addKeyboardListeners();
+        switch (controlType) {
+            case "KEYS":
+                // add event listeners for the keydown and keyup events with # notation to make them private
+                this.#addKeyboardListeners();
+                break;
+            case "DUMMY":
+                this.up = true;
+                break
+        }
     }
 
     // add event listeners for the keydown and keyup events
