@@ -4,9 +4,9 @@ import getIntersection from "../utils/getIntersection.js";
 class Sensor { // cast rays in front of the car and in different directions
     constructor(car) {
         this.car = car;
-        this.rayCount = 5;
-        this.rayLength = 150; // length of the ray (in pixels)
-        this.raySpread = Math.PI / 2; // the spread of the rays (in radians) (45 degrees)
+        this.rayCount = 10;
+        this.rayLength = 170; // length of the ray (in pixels)
+        this.raySpread = Math.PI / 1.8; // the spread of the rays (in radians) (45 degrees)
 
         this.rays = []; // array of rays (each ray is an array of two points)
         this.readings = []; // values for each array telling if there is a border or not

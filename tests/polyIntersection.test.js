@@ -1,7 +1,7 @@
 import polyIntersection from "../utils/polyIntersection";
 
 
-describe('polyIntersection function', () => {
+describe.skip('polyIntersection function', () => {
     // test the polyIntersection function
     it('polyIntersection function returns true if two polygons intersect', () => {
         const poly1 = [

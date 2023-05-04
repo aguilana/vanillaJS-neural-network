@@ -17,7 +17,27 @@ const networkCtx = networkCanvas.getContext("2d");
 
 // draw a rectangle on the canvas using the context object (ctx)
 const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9); // x, width, laneCount
-const N = 100; // number of cars
+
+// grab the number selected in the dropdown
+let carAmt = document.getElementById("carAmt");
+let mutation = document.getElementById("mutation");
+carAmt.value = localStorage.getItem('carAmt') || 1;
+mutation.value = localStorage.getItem('mutation') || 0.5;
+
+carAmt.addEventListener("change", (e) => {
+    console.log("carAmt", e.target.value);
+    localStorage.setItem("carAmt", e.target.value);
+});
+
+mutation.addEventListener("change", (e) => {
+    console.log("mutation", e.target.value);
+    localStorage.setItem("mutation", e.target.value);
+});
+
+
+console.log("carAmt", carAmt.value)
+const N = Number(carAmt.value); // number of cars
+console.log("N", N)
 const cars = generateCars(N)
 
 let bestCar = cars[0]; // set to first car at first
@@ -27,7 +47,7 @@ if (localStorage.getItem('bestBrain')) {
         cars[i].brain = JSON.parse(localStorage.getItem('bestBrain'))
         // condition if car is not 0
         if (i !== 0) {
-            NeuralNetwork.mutate(cars[i].brain, 0.1)
+            NeuralNetwork.mutate(cars[i].brain, Number(mutation.value))
         }
     }
 } else {
@@ -39,26 +59,33 @@ if (localStorage.getItem('bestBrain')) {
 //     new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2)
 // ]
 const traffic = [];
-new Array(8).fill(0).forEach((_, i) => {
-    traffic.push(new Car(road.getLaneCenter(Math.floor(Math.random() * 3)), Math.floor(-Math.random() * 800), 30, 50, "DUMMY", Math.random() * 3))
+new Array(10).fill(0).forEach((_, i) => {
+    traffic.push(new Car(road.getLaneCenter(Math.floor(Math.random() * 3)), Math.floor(-Math.random() * 1500), 30, 50, "DUMMY", Math.random() * 2.8))
 })
 
 animate();
 
 // save our car data
 function saveState() {
-    console.log("saved")
+    const confirm = window.confirm("Are you sure you want to save this car's data?")
+    if (!confirm) return
     localStorage.setItem('bestBrain', JSON.stringify(bestCar.brain))
 }
 
 function discardState() {
+    const confirm = window.confirm("Are you sure you want to discard the neural networks data? If you do this you will lose all your progress on the trained neural network.")
+    if (!confirm) return
     localStorage.removeItem('bestBrain')
 }
 
 // event listener for the save button and discard button
 document.getElementById('saveBtn').addEventListener('click', saveState)
 document.getElementById('discardBtn').addEventListener('click', discardState)
+document.getElementById('refreshBtn').addEventListener('click', reset)
 
+function reset() {
+    window.location.reload()
+}
 
 // define function called generate cars that accepts number of cars as a parameter
 function generateCars(numberOfCars) {
