@@ -30,7 +30,7 @@ class Car {
     }
 
     // draw method to draw the car on the canvas using the context object (ctx) passed in as a parameter to the draw method
-    draw(ctx) {
+    draw(ctx, color) {
         /*         // save the current context state
                 // this code was used PRIOR to creating the polygon!
                 ctx.save();
@@ -65,7 +65,7 @@ class Car {
         if (this.damaged) {
             ctx.fillStyle = 'gray'
         } else {
-            ctx.fillStyle = 'black'
+            ctx.fillStyle = color
         }
         // in addition to drawing the car we need to tell the sensor to draw itself
         ctx.beginPath();

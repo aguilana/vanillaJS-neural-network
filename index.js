@@ -43,10 +43,10 @@ function animate() {
 
     // draw the traffic on the canvas
     for (let i = 0; i < traffic.length; i++) {
-        traffic[i].draw(ctx);
+        traffic[i].draw(ctx, "red");
     }
     // draw the car on the canvas
-    car.draw(ctx); // draw the car
+    car.draw(ctx, "blue"); // draw the car and added color for our car
 
     // requestAnimationFrame is a method of the window object that tells the browser to call the animate function again
     requestAnimationFrame(animate);

@@ -17,14 +17,17 @@ class Sensor { // cast rays in front of the car and in different directions
         this.readings = [];
         for (let i = 0; i < this.rays.length; i++) {
             this.readings.push(
-                this.#getReading(this.rays[i], roadBorders)
+                this.#getReading(
+                    this.rays[i],
+                    roadBorders,
+                    traffic)
             );
         }
 
     }
 
 
-    #getReading(ray, roadBorders) {
+    #getReading(ray, roadBorders, traffic) {
         let touches = [];
 
         // loop through the borders
@@ -40,6 +43,21 @@ class Sensor { // cast rays in front of the car and in different directions
             // if the sensor touches the border, push the touch to the touches array
             if (touch) {
                 touches.push(touch);
+            }
+        }
+
+        // loop through the traffic
+        for (let i = 0; i < traffic.length; i++) {
+            // figure out where the sensor touches the border
+            const poly = traffic[i].polygon;
+            for (let j = 0; j < poly.length; j++) {
+                const value = getIntersection(
+                    ray[0], ray[1],
+                    poly[j], poly[(j + 1) % poly.length]
+                );
+                if (value) {
+                    touches.push(value);
+                }
             }
         }
 
