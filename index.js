@@ -17,7 +17,7 @@ const networkCtx = networkCanvas.getContext("2d");
 
 // draw a rectangle on the canvas using the context object (ctx)
 const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9); // x, width, laneCount
-const N = 1; // number of cars
+const N = 100; // number of cars
 const cars = generateCars(N)
 
 let bestCar = cars[0]; // set to first car at first
