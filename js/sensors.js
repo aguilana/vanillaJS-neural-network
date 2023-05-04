@@ -12,7 +12,7 @@ class Sensor { // cast rays in front of the car and in different directions
         this.readings = []; // values for each array telling if there is a border or not
     }
 
-    update(roadBorders) {
+    update(roadBorders, traffic) {
         this.#castRays();
         this.readings = [];
         for (let i = 0; i < this.rays.length; i++) {
@@ -20,6 +20,7 @@ class Sensor { // cast rays in front of the car and in different directions
                 this.#getReading(this.rays[i], roadBorders)
             );
         }
+
     }
 
 

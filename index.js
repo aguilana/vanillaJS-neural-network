@@ -26,11 +26,11 @@ animate();
 function animate() {
     // loop through the traffic and tell each to update and keep in mind the road borders
     for (let i = 0; i < traffic.length; i++) {
-        traffic[i].update(road.borders);
+        traffic[i].update(road.borders, []);
     }
 
     // update the car's position
-    car.update(road.borders); // borders added to the car's update method to keep the car on the road
+    car.update(road.borders, traffic); // borders added to the car's update method to keep the car on the road. traffic added to the car's update method to keep the car from crashing into other cars
 
     // canvas has a width and height property that we can use to set the canvas size
     canvas.height = window.innerHeight;

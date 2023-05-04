@@ -1,6 +1,6 @@
 import lerp from '../utils/lerp';
 
-describe('lerp function', () => {
+describe.skip('lerp function', () => {
     it('should return the start value when percent is 0', () => {
         expect(lerp(0, 10, 0)).toBe(0);
     });

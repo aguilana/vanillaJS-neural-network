@@ -84,25 +84,30 @@ class Car {
     }
 
     // update method to update the car's position
-    update(roadBorder) {
+    update(roadBorder, traffic) {
         if (!this.damaged) {
             this.#moveCar();
 
             // want to update the points after we move the car
             this.polygon = this.#createPolygon() // create a polygon for the car
 
-            this.damaged = this.#assessDamage(roadBorder) // assess damage to the car}
+            this.damaged = this.#assessDamage(roadBorder, traffic) // assess damage to the car}
         }
         if (this.sensor) {
-            this.sensor.update(roadBorder);
+            this.sensor.update(roadBorder, traffic);
         }
     }
 
-    #assessDamage(roadBorder) {
+    #assessDamage(roadBorder, traffic) {
         // loop through all the border and check if there is an intersection between polygon and road border of i then return true
         // else return false
         for (let i = 0; i < roadBorder.length; i++) {
             if (this.polyIntersection(this.polygon, roadBorder[i])) {
+                return true;
+            }
+        }
+        for (let i = 0; i < traffic.length; i++) {
+            if (this.polyIntersection(this.polygon, traffic[i].polygon)) {
                 return true;
             }
         }
