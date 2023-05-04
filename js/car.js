@@ -64,6 +64,7 @@ class Car {
         // logic to change color of car if damaged
         if (this.damaged) {
             ctx.fillStyle = 'gray'
+
         } else {
             ctx.fillStyle = color
         }
