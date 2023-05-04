@@ -34,7 +34,7 @@ class Car {
     }
 
     // draw method to draw the car on the canvas using the context object (ctx) passed in as a parameter to the draw method
-    draw(ctx, color) {
+    draw(ctx, color, drawSensor = false) {
         /*         // save the current context state
                 // this code was used PRIOR to creating the polygon!
                 ctx.save();
@@ -81,7 +81,7 @@ class Car {
         }
         ctx.fill();
 
-        if (this.sensor) {
+        if (this.sensor && drawSensor) {
 
             this.sensor.draw(ctx);
         }
