@@ -1,5 +1,6 @@
 import Controls from './controls.js'
 import Sensor from './sensors.js';
+import NeuralNetwork from './network.js';
 import polyIntersection from '../utils/polyIntersection.js';
 
 class Car {
@@ -20,6 +21,7 @@ class Car {
 
         if (controlType !== "DUMMY") {
             this.sensor = new Sensor(this); // passing the car instance to the sensor class
+            this.brain = new NeuralNetwork([this.sensor.rayCount, 6, 4]);
         }
 
         this.controls = new Controls(controlType);
@@ -96,6 +98,9 @@ class Car {
         }
         if (this.sensor) {
             this.sensor.update(roadBorder, traffic);
+            const offsets = this.sensor.readings.map(s => s === null ? 0 : 1 - s.offset)
+            const outputs = NeuralNetwork.feedForward(offsets, this.brain)
+            console.log("outputs: ", outputs)
         }
     }
 
