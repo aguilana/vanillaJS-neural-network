@@ -9,7 +9,7 @@ const carCanvas = document.getElementById("carCanvas");
 const networkCanvas = document.getElementById("networkCanvas");
 // set height
 carCanvas.width = 200;
-networkCanvas.width = 500;
+networkCanvas.width = 300;
 
 // have a car and want to draw on the canvas...need the drawing context
 const carCtx = carCanvas.getContext("2d");

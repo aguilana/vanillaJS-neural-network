@@ -10,7 +10,7 @@ body {
 #verticalButtons {
   display: flex;
   flex-direction: column;
-  width: 100px;
+  width: 60px;
 }
 
 button {
@@ -33,4 +33,10 @@ button:hover {
 
 #networkCanvas {
   background: black;
+}
+
+@media screen and (max-width: 550px) {
+  #networkCanvas {
+    display: none;
+  }
 }
