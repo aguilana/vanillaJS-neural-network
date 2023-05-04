@@ -1,3 +1,5 @@
+import lerp from "../utils/lerp.js";
+
 class NeuralNetwork {
     constructor(neuronCounts) {
         this.levels = []; // array of levels
@@ -22,8 +24,11 @@ class NeuralNetwork {
     }
 
     static mutate(network, amount = 1) {
+        // go through all levels of the network and mutate them
         network.levels.forEach(level => {
+            // iterate through all the biases and weights and mutate them
             for (let i = 0; i < level.biases.length; i++) {
+                // mutate the bias
                 level.biases[i] = lerp(
                     level.biases[i],
                     Math.random() * 2 - 1,

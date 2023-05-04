@@ -1,6 +1,8 @@
 import Road from "./js/road.js";
 import Car from "./js/car.js";
 import Visualizer from "./js/visualizer.js";
+import NeuralNetwork from "./js/network.js";
+
 // get a refernce to the canvas
 const carCanvas = document.getElementById("carCanvas");
 
@@ -15,35 +17,48 @@ const networkCtx = networkCanvas.getContext("2d");
 
 // draw a rectangle on the canvas using the context object (ctx)
 const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9); // x, width, laneCount
-const N = 100; // number of cars
+const N = 1; // number of cars
 const cars = generateCars(N)
 
 let bestCar = cars[0]; // set to first car at first
 if (localStorage.getItem('bestBrain')) {
-    bestCar.brain = JSON.parse(localStorage.getItem('bestBrain'))
+    // loop through cars and set the brain to the best brain
+    for (let i = 0; i < cars.length; i++) {
+        cars[i].brain = JSON.parse(localStorage.getItem('bestBrain'))
+        // condition if car is not 0
+        if (i !== 0) {
+            NeuralNetwork.mutate(cars[i].brain, 0.1)
+        }
+    }
 } else {
     bestCar.brain = cars[0].brain;
 }
 
 // createing traffic of an array of cars
-const traffic = [
-    new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2)
-]
-// const traffic = [];
-// new Array(10).fill(0).forEach((_, i) => {
-//     traffic.push(new Car(road.getLaneCenter(Math.floor(Math.random() * 3)), Math.floor(-Math.random() * 200), 30, 50, "DUMMY", Math.random() * 3))
-// })
+// const traffic = [
+//     new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2)
+// ]
+const traffic = [];
+new Array(8).fill(0).forEach((_, i) => {
+    traffic.push(new Car(road.getLaneCenter(Math.floor(Math.random() * 3)), Math.floor(-Math.random() * 800), 30, 50, "DUMMY", Math.random() * 3))
+})
 
 animate();
 
 // save our car data
-function save() {
+function saveState() {
+    console.log("saved")
     localStorage.setItem('bestBrain', JSON.stringify(bestCar.brain))
 }
 
-function discard() {
+function discardState() {
     localStorage.removeItem('bestBrain')
 }
+
+// event listener for the save button and discard button
+document.getElementById('saveBtn').addEventListener('click', saveState)
+document.getElementById('discardBtn').addEventListener('click', discardState)
+
 
 // define function called generate cars that accepts number of cars as a parameter
 function generateCars(numberOfCars) {
