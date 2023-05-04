@@ -19,6 +19,8 @@ class Car {
 
         this.damaged = false // damaged attribute of car to store in the object
 
+        this.useBrain = controlType === 'AI'; // useBrain attribute of car to store in the object
+
         if (controlType !== "DUMMY") {
             this.sensor = new Sensor(this); // passing the car instance to the sensor class
             this.brain = new NeuralNetwork([this.sensor.rayCount, 6, 4]);
@@ -100,7 +102,12 @@ class Car {
             this.sensor.update(roadBorder, traffic);
             const offsets = this.sensor.readings.map(s => s === null ? 0 : 1 - s.offset)
             const outputs = NeuralNetwork.feedForward(offsets, this.brain)
-            console.log("outputs: ", outputs)
+            if (this.useBrain) {
+                this.controls.up = outputs[0];
+                this.controls.down = outputs[1] === 1 ? 0 : 1;
+                this.controls.left = outputs[2];
+                this.controls.right = outputs[3];
+            }
         }
     }
 

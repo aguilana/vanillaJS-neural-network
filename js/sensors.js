@@ -4,7 +4,7 @@ import getIntersection from "../utils/getIntersection.js";
 class Sensor { // cast rays in front of the car and in different directions
     constructor(car) {
         this.car = car;
-        this.rayCount = 4;
+        this.rayCount = 5;
         this.rayLength = 150; // length of the ray (in pixels)
         this.raySpread = Math.PI / 2; // the spread of the rays (in radians) (45 degrees)
 

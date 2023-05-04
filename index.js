@@ -1,17 +1,21 @@
 import Road from "./js/road.js";
 import Car from "./js/car.js";
+import Visualizer from "./js/visualizer.js";
 // get a refernce to the canvas
-const canvas = document.getElementById("myCanvas");
+const carCanvas = document.getElementById("carCanvas");
 
+const networkCanvas = document.getElementById("networkCanvas");
 // set height
-canvas.width = 200;
+carCanvas.width = 200;
+networkCanvas.width = 500;
 
 // have a car and want to draw on the canvas...need the drawing context
-const ctx = canvas.getContext("2d");
+const carCtx = carCanvas.getContext("2d");
+const networkCtx = networkCanvas.getContext("2d");
 
 // draw a rectangle on the canvas using the context object (ctx)
-const road = new Road(canvas.width / 2, canvas.width * 0.9); // x, width, laneCount
-const car = new Car(road.getLaneCenter(1), 100, 30, 50, "KEYS") // x, y, width of car, height of car
+const road = new Road(carCanvas.width / 2, carCanvas.width * 0.9); // x, width, laneCount
+const car = new Car(road.getLaneCenter(1), 100, 30, 50, "AI") // x, y, width of car, height of car
 
 // createing traffic of an array of cars
 const traffic = [
@@ -23,7 +27,7 @@ const traffic = [
 
 animate();
 // update the car's position
-function animate() {
+function animate(time) {
     // loop through the traffic and tell each to update and keep in mind the road borders
     for (let i = 0; i < traffic.length; i++) {
         traffic[i].update(road.borders, []);
@@ -33,21 +37,25 @@ function animate() {
     car.update(road.borders, traffic); // borders added to the car's update method to keep the car on the road. traffic added to the car's update method to keep the car from crashing into other cars
 
     // canvas has a width and height property that we can use to set the canvas size
-    canvas.height = window.innerHeight;
+    carCanvas.height = window.innerHeight;
+    networkCanvas.height = window.innerHeight;
+
 
     // before drawing the road, we will save the current context state
-    ctx.save();
-    ctx.translate(0, -car.y + canvas.height * 0.8); // translate the canvas to the center of the car where we want the center to be positioned
+    carCtx.save();
+    carCtx.translate(0, -car.y + carCanvas.height * 0.8); // translate the canvas to the center of the car where we want the center to be positioned
     // draw the road on the canvas
-    road.draw(ctx);
+    road.draw(carCtx);
 
     // draw the traffic on the canvas
     for (let i = 0; i < traffic.length; i++) {
-        traffic[i].draw(ctx, "red");
+        traffic[i].draw(carCtx, "red");
     }
     // draw the car on the canvas
-    car.draw(ctx, "blue"); // draw the car and added color for our car
+    car.draw(carCtx, "blue"); // draw the car and added color for our car
 
+    networkCtx.lineDashOffset = time
+    Visualizer.drawNetwork(networkCtx, car.brain);
     // requestAnimationFrame is a method of the window object that tells the browser to call the animate function again
     requestAnimationFrame(animate);
 }
