@@ -94,7 +94,7 @@ function generateCars(numberOfCars) {
     // loop through the number of cars
     for (let i = 1; i <= numberOfCars; i++) {
         // create a new car and push it into the array
-        cars.push(new Car(road.getLaneCenter(1), 100, 30, 50, "AI")); // x, y, width of car, height of car
+        cars.push(new Car(road.getLaneCenter(1), 100, 15, 40, "AI")); // x, y, width of car, height of car
     }
     // return the array of cars
     return cars;
